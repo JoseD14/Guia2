@@ -1,0 +1,44 @@
+
+# Archivos de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Archivos de compilación
+bin/
+obj/
+out/
+
+# Archivos de paquetes
+*.nupkg
+packages/
+*.snupkg
+
+# Logs
+*.log
+
+# Archivos de publicación
+*.publish.xml
+
+# Configuración local
+*.dbmdl
+*.vscode/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+
+# Archivos de Rider/JetBrains
+.idea/
+
+# Archivos de seguridad
+secrets.json
+
+# Archivos de pruebas
+TestResults/
+
+# Otros
+_ReSharper*/
+*.resharper
+*.DotSettings.user
