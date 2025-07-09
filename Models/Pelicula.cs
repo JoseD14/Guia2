@@ -11,9 +11,13 @@ namespace MVCPelicula_DH211056.Models
         [Required]
         public string Titulo { get; set; }
         public DateTime FechaLanzamiento { get; set; }
-        [ForeignKey("Genero")]
+        
+        [Display(Name = "Género")]
         [Required]
-        public string Genero { get; set; }
+        public int GeneroId { get; set; }
+
+        [ForeignKey("GeneroId")]
+        public Genero Genero { get; set; }
         [Required]
         public decimal Precio { get; set; }
         [StringLength(250)]

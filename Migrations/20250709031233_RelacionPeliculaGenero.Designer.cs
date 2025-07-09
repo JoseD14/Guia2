@@ -4,6 +4,7 @@ using MVCPelicula_DH211056.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCPelicula_DH211056.Migrations
 {
     [DbContext(typeof(PeliculasDBContext))]
-    partial class PeliculasDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250709031233_RelacionPeliculaGenero")]
+    partial class RelacionPeliculaGenero
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +35,7 @@ namespace MVCPelicula_DH211056.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -56,6 +58,10 @@ namespace MVCPelicula_DH211056.Migrations
                     b.Property<DateTime>("FechaLanzamiento")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GeneroId")
                         .HasColumnType("int");
 
@@ -76,13 +82,11 @@ namespace MVCPelicula_DH211056.Migrations
 
             modelBuilder.Entity("MVCPelicula_DH211056.Models.Pelicula", b =>
                 {
-                    b.HasOne("MVCPelicula_DH211056.Models.Genero", "Genero")
+                    b.HasOne("MVCPelicula_DH211056.Models.Genero", null)
                         .WithMany("Peliculas")
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("MVCPelicula_DH211056.Models.Genero", b =>

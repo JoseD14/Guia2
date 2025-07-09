@@ -9,23 +9,22 @@ using MVCPelicula_DH211056.Models;
 
 namespace MVCPelicula_DH211056.Controllers
 {
-    public class PeliculasController : Controller
+    public class GenerosController : Controller
     {
         private readonly PeliculasDBContext _context;
 
-        public PeliculasController(PeliculasDBContext context)
+        public GenerosController(PeliculasDBContext context)
         {
             _context = context;
         }
 
-        // GET: Peliculas
+        // GET: Generos
         public async Task<IActionResult> Index()
         {
-            var peliculasConGenero = _context.Peliculas.Include(p => p.Genero);
-            return View(await _context.Peliculas.ToListAsync());
+            return View(await _context.Generos.ToListAsync());
         }
 
-        // GET: Peliculas/Details/5
+        // GET: Generos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,66 +32,64 @@ namespace MVCPelicula_DH211056.Controllers
                 return NotFound();
             }
 
-            var pelicula = await _context.Peliculas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (pelicula == null)
+            var genero = await _context.Generos
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (genero == null)
             {
                 return NotFound();
             }
 
-            return View(pelicula);
+            return View(genero);
         }
 
-        // GET: Peliculas/Create
+        // GET: Generos/Create
         public IActionResult Create()
         {
-            ViewBag.GeneroId = new SelectList(_context.Generos, "Id", "Nombre");
             return View();
         }
 
-        // POST: Peliculas/Create
+        // POST: Generos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Titulo,FechaLanzamiento,Genero,Precio,Director")] Pelicula pelicula)
+        public async Task<IActionResult> Create([Bind("Id,Nombre")] Genero genero)
         {
-            ModelState.Remove("Genero");
+            
             if (ModelState.IsValid)
             {
-                _context.Add(pelicula);
+                _context.Add(genero);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pelicula);
+            return View(genero);
         }
 
-        // GET: Peliculas/Edit/5
+        // GET: Generos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.GeneroId = new SelectList(_context.Generos, "Id", "Nombre");
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pelicula = await _context.Peliculas.FindAsync(id);
-            if (pelicula == null)
+            var genero = await _context.Generos.FindAsync(id);
+            if (genero == null)
             {
                 return NotFound();
             }
-            return View(pelicula);
+            return View(genero);
         }
 
-        // POST: Peliculas/Edit/5
+        // POST: Generos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,FechaLanzamiento,Genero,Precio,Director")] Pelicula pelicula)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Genero genero)
         {
-            ModelState.Remove("Genero");
-            if (id != pelicula.ID)
+            ModelState.Remove("Nombre");
+            if (id != genero.Id)
             {
                 return NotFound();
             }
@@ -101,12 +98,12 @@ namespace MVCPelicula_DH211056.Controllers
             {
                 try
                 {
-                    _context.Update(pelicula);
+                    _context.Update(genero);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PeliculaExists(pelicula.ID))
+                    if (!GeneroExists(genero.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +114,10 @@ namespace MVCPelicula_DH211056.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pelicula);
+            return View(genero);
         }
 
-        // GET: Peliculas/Delete/5
+        // GET: Generos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,34 +125,34 @@ namespace MVCPelicula_DH211056.Controllers
                 return NotFound();
             }
 
-            var pelicula = await _context.Peliculas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (pelicula == null)
+            var genero = await _context.Generos
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (genero == null)
             {
                 return NotFound();
             }
 
-            return View(pelicula);
+            return View(genero);
         }
 
-        // POST: Peliculas/Delete/5
+        // POST: Generos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
-            if (pelicula != null)
+            var genero = await _context.Generos.FindAsync(id);
+            if (genero != null)
             {
-                _context.Peliculas.Remove(pelicula);
+                _context.Generos.Remove(genero);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PeliculaExists(int id)
+        private bool GeneroExists(int id)
         {
-            return _context.Peliculas.Any(e => e.ID == id);
+            return _context.Generos.Any(e => e.Id == id);
         }
     }
 }
