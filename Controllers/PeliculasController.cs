@@ -19,11 +19,23 @@ namespace MVCPelicula_DH211056.Controllers
         }
 
         // GET: Peliculas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string textoABuscar)
         {
-            var peliculasConGenero = _context.Peliculas.Include(p => p.Genero);
-            return View(await _context.Peliculas.ToListAsync());
+            IQueryable<Pelicula> peliculas = _context.Peliculas.Include(p => p.Genero);
+
+            if (_context.Peliculas == null)
+            {
+                return Problem("No se ha inicializado el contexto");
+            }
+
+            if (!string.IsNullOrWhiteSpace(textoABuscar))
+            {
+                peliculas = peliculas.Where(p => p.Titulo.Contains(textoABuscar));
+            }
+
+            return View(await peliculas.ToListAsync());
         }
+
 
         // GET: Peliculas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -53,6 +65,11 @@ namespace MVCPelicula_DH211056.Controllers
         // POST: Peliculas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public string Index(string textoABuscar, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + textoABuscar;
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Titulo,FechaLanzamiento,Genero,Precio,Director")] Pelicula pelicula)

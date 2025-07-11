@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCPelicula_DH211056.Migrations
 {
     [DbContext(typeof(PeliculasDBContext))]
-    [Migration("20250709031233_RelacionPeliculaGenero")]
-    partial class RelacionPeliculaGenero
+    [Migration("20250711002851_Migracion Inicial")]
+    partial class MigracionInicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,44 @@ namespace MVCPelicula_DH211056.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Generos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Comedia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Romance"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Aventura"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Acción"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nombre = "Ficción"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Nombre = "Drama"
+                        });
                 });
 
             modelBuilder.Entity("MVCPelicula_DH211056.Models.Pelicula", b =>
@@ -58,10 +91,6 @@ namespace MVCPelicula_DH211056.Migrations
                     b.Property<DateTime>("FechaLanzamiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("GeneroId")
                         .HasColumnType("int");
 
@@ -78,15 +107,46 @@ namespace MVCPelicula_DH211056.Migrations
                     b.HasIndex("GeneroId");
 
                     b.ToTable("Peliculas");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Director = "Hermanas Wachowski",
+                            FechaLanzamiento = new DateTime(2003, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GeneroId = 4,
+                            Precio = 10.99m,
+                            Titulo = "Matrix recargado"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Director = "Peter Jackson",
+                            FechaLanzamiento = new DateTime(2002, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GeneroId = 3,
+                            Precio = 11.99m,
+                            Titulo = "El señor de los anillos: Las dos torres"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Director = "Chris Columbus",
+                            FechaLanzamiento = new DateTime(2002, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GeneroId = 5,
+                            Precio = 9.99m,
+                            Titulo = "Harry Potter y la cámara secreta"
+                        });
                 });
 
             modelBuilder.Entity("MVCPelicula_DH211056.Models.Pelicula", b =>
                 {
-                    b.HasOne("MVCPelicula_DH211056.Models.Genero", null)
+                    b.HasOne("MVCPelicula_DH211056.Models.Genero", "Genero")
                         .WithMany("Peliculas")
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("MVCPelicula_DH211056.Models.Genero", b =>
